@@ -4,12 +4,12 @@
     <div class="container text-white">
       <div class="row p-4 m-1 bg-secondary rounded-3">
         <div class="row">
-          <form @submit="multiplyBinary()">
+          <form @submit="binarioToDecimal()">
             <div class="row">
               <div class="col-6 m-auto">
                 <h5>Ingrese valor a convertir</h5>
                 <div class="input-group mb-3">
-                  <input type="number" class="form-control" id="numero" aria-describedby="numero" v-model="numero" required>
+                  <input type="text" class="form-control" id="numero" aria-describedby="numero" v-model="numero" required>
                   <select class="form-select" id="inputGroupSelect01">
                     <option selected>Elegir opcion...</option>
                     <option value="1">Decimal a octal</option>
@@ -22,15 +22,13 @@
             <div class="row">
               <div class="col-8 m-auto bg-white text-dark rounded-3 p-4">
                 <div class="row">
-                  <div class="col-4 text-start">{{}}</div>
+                  <div class="col-12 text-start" v-for="(cadena,i) in operaciones.entero" :key="i"><div v-html="cadena"></div></div>
                 </div>
                 <div class="row mt-3">
-                  <div v-for="(iteracion,i) in 3" :key="i" class="m-1">
-                    <div class="row">
-                      <div class="col-4 text-start">{{}}</div>
-                    </div>  
-                  </div>
-                  <h5 class="mt-3">Resultado( x) = <sub>10</sub> = <sub>2</sub></h5>
+                  <div class="col-12 text-start" v-for="(cadena,j) in operaciones.decimal" :key="j"><div v-html="cadena"></div></div>
+                </div>
+                <div class="row mt-3">
+                  <h5 class="mt-3" v-html="operaciones.resultado"></h5>
                 </div>
               </div>
             </div>
@@ -55,20 +53,62 @@ export default {
       operaciones: {
         entero: [],
         decimal: []
-      }
+      }, 
+      resultado: ''
     }
   },
   methods: {
     binarioToDecimal(){
       let cadenas = []
-      if (this.numero.indexOf(',') > -1) {
-        cadenas = numero.split(',')
-        for (let i = 0; i < cadenas[0].length; i++) {
-          this.operaciones = this.operaciones + ' = ' + cadenas[0].charAt(cadenas[0].length-1-i) + '(2)' + cadenas[0].length-1-i
-        }
-      }else {
-        cadenas[0] = this.numero
+      let total = 0
+      this.operaciones.decimal = []
+      cadenas = this.numero.split(',')
+      let cd1 = '<span>' + cadenas[0] + ' = '
+      let cd2 = '<span>' + cadenas[0] + ' = '
+      let cd3 = '<span>' + cadenas[0] + ' = '
+      let semiSum = 0
+      
+      for (let i = 0; i < cadenas[0].length; i++) {
+        let expo = (cadenas[0].length-1-i)
+        let digit = parseInt(cadenas[0].charAt(i))
+
+        cd1 += digit + '(2<sup>'+ expo +'</sup>)'+ '</span>';
+        (i<cadenas[0].length-1) ? cd1 += '+' : cd1 += '';
+        cd2 += digit * Math.pow(2,expo) + '</span>';
+        (i<cadenas[0].length-1) ? cd2 += '+' : cd2 += ''
+        semiSum += digit * Math.pow(2,expo)
       }
+      cd3 += semiSum + '</span>'
+      total += semiSum
+      this.operaciones.entero = []
+      this.operaciones.entero.push(cd1)
+      this.operaciones.entero.push(cd2)
+      this.operaciones.entero.push(cd3)
+
+      if (cadenas.length > 1) {
+        cd1 = '<span>0,' + cadenas[1] + ' = '
+        cd2 = '<span>0,' + cadenas[1] + ' = '
+        cd3 = '<span>0,' + cadenas[1] + ' = '
+        semiSum = 0
+
+        for (let i = 0; i < cadenas[1].length; i++) {
+          let expo = -(i+1)
+          let digit = parseInt(cadenas[1].charAt(i))
+
+          cd1 += digit + '(2<sup>'+ expo +'</sup>)'+ '</span>';
+          (i<cadenas[1].length-1) ? cd1 += '+' : cd1 += '';
+          cd2 += digit * Math.pow(2,expo) + '</span>';
+          (i<cadenas[1].length-1) ? cd2 += '+' : cd2 += ''
+          semiSum += digit * Math.pow(2,expo)
+        }
+        cd3 += semiSum + '</span>'
+        this.operaciones.decimal.push(cd1)
+        this.operaciones.decimal.push(cd2)
+        this.operaciones.decimal.push(cd3)
+      }
+
+      total += semiSum
+      this.operaciones.resultado = '<span>' + this.numero + '<sub>2</sub> = ' + total + '<sub>10</sub>'
     }
   }
 }
