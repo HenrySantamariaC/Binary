@@ -4,14 +4,13 @@
     <div class="container text-white">
       <div class="row p-4 m-1 bg-secondary rounded-3">
         <div class="row">
-          <form @submit="binarioToDecimal()">
+          <form @submit="switchOperation()">
             <div class="row">
               <div class="col-6 m-auto">
                 <h5>Ingrese valor a convertir</h5>
                 <div class="input-group mb-3">
                   <input type="text" class="form-control" id="numero" aria-describedby="numero" v-model="numero" required>
-                  <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Elegir opcion...</option>
+                  <select class="form-select" id="inputGroupSelect01" v-model="operacion">
                     <option value="1">Decimal a octal</option>
                     <option value="2">Binario a decimal</option>
                   </select>
@@ -28,7 +27,7 @@
                   <div class="col-12 text-start" v-for="(cadena,j) in operaciones.decimal" :key="j"><div v-html="cadena"></div></div>
                 </div>
                 <div class="row mt-3">
-                  <h5 class="mt-3" v-html="operaciones.resultado"></h5>
+                  <h5 class="mt-3" v-html="resultado"></h5>
                 </div>
               </div>
             </div>
@@ -54,7 +53,8 @@ export default {
         entero: [],
         decimal: []
       }, 
-      resultado: ''
+      resultado: '',
+      operacion: '1'
     }
   },
   methods: {
@@ -108,12 +108,48 @@ export default {
       }
 
       total += semiSum
-      this.operaciones.resultado = '<span>' + this.numero + '<sub>2</sub> = ' + total + '<sub>10</sub>'
+      this.resultado = '<span>' + this.numero + '<sub>2</sub> = ' + total + '<sub>10</sub>'
+    },
+    decimalToOctal(){
+      let strFinal = ''
+      let residuo = 0
+      let temp = this.numero
+      let sn = 8
+      this.operaciones.entero = []
+
+      while (temp > sn) {
+        residuo = temp % sn
+        let str = '<span>' + temp + ' / ' + sn + ' = '
+        temp = (temp - residuo) / sn
+        if (temp > sn) {
+          str += temp + ' <span class="text-danger fw-bold">' + residuo +'</span></span>'
+        } else {
+          str += ' <span class="text-danger fw-bold">'+ temp + ' ' + residuo +'</span></span>'
+        }
+        strFinal = residuo + strFinal
+        this.operaciones.entero.push(str)
+      }
+      strFinal = temp + strFinal
+      this.resultado = '<span>' + this.numero + '<sub>10</sub> = ' + strFinal + '<sub>'+ sn +'</sub>'
+    },
+    switchOperation(){
+      console.log(this.operacion);
+      switch (this.operacion) {
+        case '1':
+          this.decimalToOctal()
+          break;
+        case '2':
+          this.binarioToDecimal()
+          break;
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-
+  .resto {
+    font-weight: bold !important;
+    color: brown !important;
+  }
 </style>
