@@ -2,11 +2,11 @@
   <section>
     <header><h1 class="text-white">Multiplicador por suma y desplazamiento binario</h1></header>
     <div class="container text-white">
-      <div class="row p-4 m-1 bg-secondary rounded-3">
-        <div class="row">
+      <div class="row py-4 p-md-4 mx-1 bg-secondary rounded-3">
+        <div class="row mx-auto">
           <form @submit="multiplyBinary()">
             <div class="row">
-              <div class="col-6 m-auto">
+              <div class="col-md-6 m-auto">
                 <h5>Ingrese valores a multiplicar</h5>
                 <div class="input-group mb-3">
                   <input type="number" class="form-control" id="multiplicador" aria-describedby="multiplicador" v-model="multiplicador" required>
@@ -17,7 +17,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-8 m-auto bg-white text-dark rounded-3 p-4">
+              <div class="col-11 col-md-8 m-auto bg-white text-dark rounded-3 p-4">
                 <div class="row">
                   <div class="col-4 text-center">{{operaciones.binarios.multiplicador}}</div>
                   <div class="col-4 text-center">{{operaciones.binarios.multiplicando}}</div>

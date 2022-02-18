@@ -2,11 +2,11 @@
   <section>
     <header><h1 class="text-white">Convertidor de bases numéricas</h1></header>
     <div class="container text-white">
-      <div class="row p-4 m-1 bg-secondary rounded-3">
-        <div class="row">
+      <div class="row p-2 p-md-4 mx-1 bg-secondary rounded-3">
+        <div class="row mx-auto">
           <form @submit="switchOperation()">
             <div class="row">
-              <div class="col-6 m-auto">
+              <div class="col-md-6 m-auto">
                 <h5>Ingrese valor a convertir</h5>
                 <div class="input-group mb-3">
                   <input type="text" class="form-control" id="numero" aria-describedby="numero" v-model="numero" required>
@@ -19,7 +19,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-8 m-auto bg-white text-dark rounded-3 p-4">
+              <div class="col-11 col-md-8 m-auto bg-white text-dark rounded-3 p-4">
                 <div class="row">
                   <div class="col-12 text-start" v-for="(cadena,i) in operaciones.entero" :key="i"><div v-html="cadena"></div></div>
                 </div>
